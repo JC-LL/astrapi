@@ -83,7 +83,7 @@ end
 
 Then compile this metamodel using Astrapi :
 
-```bash
+```console
 jcll$ > astrapi geometry.mm
 ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
 ==> parsing metamodel.................... geometry.mm
