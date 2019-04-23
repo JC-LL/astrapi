@@ -1,0 +1,152 @@
+<h1 id="astrapi-meta-compiler">Astrapi meta-compiler</h1>
+
+<h2 id="what-is-astrapi-">What is Astrapi ?</h2>
+
+<p>Astrapi is meta-compiler for Sexp-based Domain Specific Languages : once you have described your DSL concepts (abstract syntax) thanks to Astrapi language, the compiler generates several files for you:</p>
+
+<ul>
+  <li>the corresponding classes</li>
+  <li>lexer and parser</li>
+  <li>generic visitor</li>
+  <li>pretty printer</li>
+  <li>graphical AST viewer</li>
+</ul>
+
+<p>Finally a driver for you own DSL compiler is also generated. Version 0.0.2 provides Ruby generation, but Python, Java and C++ will be available soon.</p>
+
+<p>Astrapi-generated DSL parser will assume your DSL models are written in plain <strong>s-expressions</strong>.</p>
+
+<h2 id="what-are-s-expressions-">What are s-expressions ?</h2>
+<p>S-expressions, abreviated as "sexps", actually mean "symbolic expressions". They originated from the famous LISP language. Compiler designers resort to  <em>sexp</em> as the most direct mean to capture Abstract Syntax Trees (AST) in a textual format.</p>
+
+<p>Sexps are convenient to serialize both data <em>and</em> code, which offers a superiority over other serialization formats like XML, YAML or JSON.</p>
+
+<p>It may be noticed that several S-expressions parsers exist around. In the Ruby ecosystems, SXP and Sexpistols can be recommanded. However, these parsers will just turn the parenthesized expressions into a Ruby native data structure : namely arrays of arrays, etc. If your intent is to consider each s-expression as an instance of a <em>custom</em> class, then Astrapi is for you !</p>
+
+<h2 id="how-to-install-">How to install ?</h2>
+<p>In your terminal, simply type : <strong>gem install astrapi</strong></p>
+
+<h2 id="quick-start">Quick start</h2>
+<p>In this example, we invent a toy language (DSL) that aims at describing simple geometry. Let us begin with examples programs written in our expected syntax :</p>
+
+<!-- HTML generated using hilite.me -->
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">(<span style="color: #0066BB; font-weight: bold">scene</span> <span style="color: #996633">test</span>
+  (<span style="color: #0066BB; font-weight: bold">square</span> <span style="color: #996633">s1</span>
+     (<span style="color: #0066BB; font-weight: bold">position</span> <span style="color: #0000DD; font-weight: bold">123</span> <span style="color: #0000DD; font-weight: bold">345</span>)
+     (<span style="color: #0066BB; font-weight: bold">size</span> <span style="color: #0000DD; font-weight: bold">12</span>)
+  )
+  (<span style="color: #0066BB; font-weight: bold">circle</span> <span style="color: #996633">c1</span>
+     (<span style="color: #0066BB; font-weight: bold">position</span> <span style="color: #0000DD; font-weight: bold">123</span> <span style="color: #0000DD; font-weight: bold">345</span>)
+     (<span style="color: #0066BB; font-weight: bold">size</span> <span style="color: #0000DD; font-weight: bold">12</span> <span style="color: #0000DD; font-weight: bold">23</span>)
+  )
+  (<span style="color: #0066BB; font-weight: bold">rectangle</span> <span style="color: #996633">s2</span>
+     (<span style="color: #0066BB; font-weight: bold">position</span> <span style="color: #0000DD; font-weight: bold">323</span> <span style="color: #0000DD; font-weight: bold">445</span>)
+     (<span style="color: #0066BB; font-weight: bold">size</span> <span style="color: #0000DD; font-weight: bold">12</span> <span style="color: #0000DD; font-weight: bold">34</span>)
+  )
+)
+</pre></div>
+
+<p>Now let's express the concepts of this model : let's name this a <em>metamodel</em>. I suffix this file with '.mm'. It ressembles <em>Ruby modules and class</em>, but it is not.</p>
+
+<!-- HTML generated using hilite.me -->
+<div style="background: #f0f3f3; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #006699; font-weight: bold">module</span> <span style="color: #00CCFF; font-weight: bold">Geometry</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Scene</span>
+    <span style="color: #006699">attr</span> <span style="color: #336666">name</span> <span style="color: #555555">=&gt;</span> <span style="color: #336600">IDENT</span>
+    <span style="color: #006699">attr</span> elements <span style="color: #555555">=&gt;</span> <span style="color: #336600">Shape</span><span style="color: #555555">[]</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Shape</span>
+    <span style="color: #006699">attr</span> <span style="color: #336666">id</span> <span style="color: #555555">=&gt;</span> <span style="color: #336600">IDENT</span>
+    <span style="color: #006699">attr</span> position <span style="color: #555555">=&gt;</span> <span style="color: #336600">Position</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Square</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">Shape</span>
+    <span style="color: #006699">attr</span> size <span style="color: #555555">=&gt;</span> <span style="color: #336600">Size</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Circle</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">Shape</span>
+    <span style="color: #006699">attr</span> radius <span style="color: #555555">=&gt;</span> <span style="color: #336600">Size</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Rectangle</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">Shape</span>
+    <span style="color: #006699">attr</span> size <span style="color: #555555">=&gt;</span> <span style="color: #336600">Size</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Size</span>
+    <span style="color: #006699">attr</span> dims <span style="color: #555555">=&gt;</span> <span style="color: #336600">INTEGER</span><span style="color: #555555">[]</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+
+  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Position</span>
+     <span style="color: #006699">attr</span> coord <span style="color: #555555">=&gt;</span> <span style="color: #336600">INTEGER</span><span style="color: #555555">[]</span>
+  <span style="color: #006699; font-weight: bold">end</span>
+<span style="color: #006699; font-weight: bold">end</span>
+</pre></div>
+
+<p>Then compile this metamodel using Astrapi :</p>
+
+<!-- HTML generated using hilite.me -->
+<div style="background: #f0f3f3; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">
+jcll$ &gt; astrapi geometry.mm
+ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
+==&gt; parsing metamodel.................... geometry.mm
+==&gt; pretty print metamodel............... geometry_pp.mm
+==&gt; generate dot for metamodel........... geometry_ast.dot
+==&gt; checking metamodel
+==&gt; generating class diagram............. geometry_class_diagram.dot
+==&gt; generate software stack for DSL &#39;Geometry&#39;. Ruby version
+----&gt; generating Geometry DSL AST classes
+----&gt; generating Geometry DSL AST printer
+----&gt; generating Geometry DSL lexer
+----&gt; generating Geometry DSL parser
+----&gt; generating Geometry DSL pretty printer
+----&gt; generating Geometry DSL compiler
+</pre></div>
+
+<p>Now we can play with our brand new Geometry compiler !</p>
+
+<!-- HTML generated using hilite.me -->
+<div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">$&gt; ruby geometry_compiler.rb ex1.geo
+Geometry compiler
+==&gt; parsing ex1.geo
+==&gt; pretty print to ........ ex1.geo_pp.geometry
+==&gt; generate dot for AST in ex1.geo.dot
+compiled in     : 0.001463371 s
+</pre></div>
+
+<p>In particular, we can have a look at the graphical AST (plain graphiz dot format). If you have xdot installed, simply type <strong>xdot ex1.geo.dot</strong> and the AST of our example will show up like this.</p>
+
+<p><img src="./img/ex1.geo.png" alt="Image of AST model" /></p>
+
+<h2 id="about-the-metamodel">About the Metamodel</h2>
+
+<h3 id="basic-syntax">Basic syntax</h3>
+<p>Astrapi metamodel syntax remains very basic. A concept is captured as a <strong>class</strong>, followed by the list of its attributes <strong>attr</strong>. The type of the attributes appears after <strong>=&gt;</strong>. Attributes can be simple or multiple. The order of declaration of classes has no importance, but the <strong>order of <em>attr</em> declarations is fundamental</strong>, as it drives the generated DSL parser. This may be enhanced in a future version.</p>
+
+<h3 id="basic-data-types">Basic data types</h3>
+<p>There also exist some basic types understood by Astrapi and parsed as <em>terminals</em> :</p>
+
+<ul>
+  <li><strong>IDENT</strong> will make the lexer recognize tokens matching the regexp /[a-zA-Z]+[a-zA-Z_0-9]*/i.</li>
+  <li><strong>INTEGER</strong> : regexp is /[0-9]+/</li>
+  <li><strong>FLOAT</strong> : regexp is /[0-9]+.[0-9]+/</li>
+  <li><strong>RANGE</strong> : regexp is /[0-9]+..[0-9+/</li>
+  <li><strong>STRING</strong> : regexp is /"(.*)"/</li>
+  <li><strong>NIL</strong> : regexp is /nil/</li>
+</ul>
+
+<p>Note that you can use <strong>nil</strong> in your DSL model, either for expected concepts or terminals.</p>
+
+<h3 id="graphical-view-of-the-metamodel">Graphical view of the Metamodel</h3>
+<p>A graphical view of the metamodel structure is also generated by Astrapi. This is a basic <em>class-diagram</em> of the AST classes. The name of the dot file appears during the metamodel compilation. It is suffix a ** xxx_ast.dot <strong>.
+To view it, type **xdot xxx_ast.dot</strong>. For our Geometry example :</p>
+
+<p><img src="./img/geometry_class_diagram.png" alt="Image of the metamodel" /></p>
+
+<h2 id="comments-in-astrapi-s-expressions">Comments in Astrapi s-expressions</h2>
+<p>Comments are accepted in Astrapi s-expressions. Comments starts with <strong>#</strong> symbol and ends at the end of line. A comment will be attached (attribute <strong>.comments_</strong>) to the AST node following this comment. As such, comments can be reused (code generation etc).</p>
+
+<h2 id="credits">Credits</h2>
+<p>Please <a href="mailto:lelannje@ensta-bretagne.fr">drop me an email</a> if you use Astrapi, or want some additional features or bug fixes.</p>
+
+<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=6aEp&d=bn5ihGWjvz0XKgWOuAXdtfuBYTxusD0IaDGjnw-bb4g"></script>
