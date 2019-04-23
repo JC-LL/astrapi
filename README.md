@@ -25,7 +25,7 @@ It may be noticed that several S-expressions parsers exist around. In the Ruby e
 In your terminal, simply type : **gem install astrapi**
 
 ##Quick start
-In this example, we invent a toy language (DSL) that aims at describing simple geometry. Let us begin with examples programs written in our expected syntax :
+In this example, we invent a toy language (DSL) that aims at describing simple geometry. Let us begin with examples programs written in our expected syntax  :
 
 <!-- HTML generated using hilite.me -->
 <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">(<span style="color: #0066BB; font-weight: bold">scene</span> <span style="color: #996633">test</span>
