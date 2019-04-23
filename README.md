@@ -102,14 +102,14 @@ ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
 
 Now we can play with our brand new Geometry compiler !
 
-<!-- HTML generated using hilite.me -->
-<div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">$&gt; ruby geometry_compiler.rb ex1.geo
+```console
+> ruby geometry_compiler.rb ex1.geo
 Geometry compiler
-==&gt; parsing ex1.geo
-==&gt; pretty print to ........ ex1.geo_pp.geometry
-==&gt; generate dot for AST in ex1.geo.dot
+==> parsing ex1.geo
+==> pretty print to ........ ex1.geo_pp.geometry
+==> generate dot for AST in ex1.geo.dot
 compiled in     : 0.001463371 s
-</pre></div>
+```
 
 In particular, we can have a look at the graphical AST (plain graphiz dot format). If you have xdot installed, simply type **xdot ex1.geo.dot** and the AST of our example will show up like this.
 
