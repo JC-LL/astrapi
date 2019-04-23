@@ -86,18 +86,18 @@ Then compile this metamodel using Astrapi :
 ```bash
 jcll$ > astrapi geometry.mm
 ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
-==&gt; parsing metamodel.................... geometry.mm
-==&gt; pretty print metamodel............... geometry_pp.mm
-==&gt; generate dot for metamodel........... geometry_ast.dot
-==&gt; checking metamodel
-==&gt; generating class diagram............. geometry_class_diagram.dot
-==&gt; generate software stack for DSL &#39;Geometry&#39;. Ruby version
-----&gt; generating Geometry DSL AST classes
-----&gt; generating Geometry DSL AST printer
-----&gt; generating Geometry DSL lexer
-----&gt; generating Geometry DSL parser
-----&gt; generating Geometry DSL pretty printer
-----&gt; generating Geometry DSL compiler
+==> parsing metamodel.................... geometry.mm
+==> pretty print metamodel............... geometry_pp.mm
+==> generate dot for metamodel........... geometry_ast.dot
+==> checking metamodel
+==> generating class diagram............. geometry_class_diagram.dot
+==> generate software stack for DSL &#39;Geometry&#39;. Ruby version
+-----> generating Geometry DSL AST classes
+-----> generating Geometry DSL AST printer
+-----> generating Geometry DSL lexer
+-----> generating Geometry DSL parser
+-----> generating Geometry DSL pretty printer
+-----> generating Geometry DSL compiler
 ```
 
 Now we can play with our brand new Geometry compiler !
