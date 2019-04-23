@@ -103,7 +103,7 @@ ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
 Now we can play with our brand new Geometry compiler !
 
 ```console
-> ruby geometry_compiler.rb ex1.geo
+jcll$ > ruby geometry_compiler.rb ex1.geo
 Geometry compiler
 ==> parsing ex1.geo
 ==> pretty print to ........ ex1.geo_pp.geometry
