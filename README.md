@@ -79,12 +79,11 @@ module Geometry
   end
 
 end
-`̀``
+```
 
 Then compile this metamodel using Astrapi :
 
-<!-- HTML generated using hilite.me -->
-<div style="background: #f0f3f3; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">
+```bash
 jcll$ > astrapi geometry.mm
 ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
 ==&gt; parsing metamodel.................... geometry.mm
@@ -99,7 +98,7 @@ ASTRAPI meta-compiler for Sexp-based DSLs (c) J-C Le Lann 2016
 ----&gt; generating Geometry DSL parser
 ----&gt; generating Geometry DSL pretty printer
 ----&gt; generating Geometry DSL compiler
-</pre></div>
+```
 
 Now we can play with our brand new Geometry compiler !
 
