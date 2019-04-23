@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require_relative "../lib/compiler"
+
+t1 = Time.now
+compiler=Astrapi::Compiler.new
+filename=compiler.analyze_options(ARGV)
+compiler.compile(filename)
+t2 = Time.now
+puts "compiled in     : #{t2-t1} s" if $options[:verbosity]>=2
