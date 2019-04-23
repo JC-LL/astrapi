@@ -27,7 +27,7 @@ In your terminal, simply type : **gem install astrapi**
 ## Quick start
 In this example, we invent a toy language (DSL) that aims at describing simple geometry. Let us begin with examples programs written in our expected syntax :
 
-'''lisp
+```lisp
 (scene test
   (square s1
      (position 123 345)
@@ -42,10 +42,10 @@ In this example, we invent a toy language (DSL) that aims at describing simple g
      (size 12 34)
   )
 )
-'''
+```
 
 Now let\'s express the concepts of this model : let\'s name this a *metamodel*. I suffix this file with \'.mm\'. It ressembles *Ruby modules and class*, but it is not.
-'''Ruby
+```Ruby
 module Geometry
 
   class Scene
@@ -79,9 +79,7 @@ module Geometry
   end
 
 end
-
-'''
-
+`̀``
 
 Then compile this metamodel using Astrapi :
 
