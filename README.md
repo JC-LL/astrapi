@@ -27,59 +27,60 @@ In your terminal, simply type : **gem install astrapi**
 ## Quick start
 In this example, we invent a toy language (DSL) that aims at describing simple geometry. Let us begin with examples programs written in our expected syntax :
 
-<!-- HTML generated using hilite.me -->
-<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">(<span style="color: #0066BB; font-weight: bold">scene</span> <span style="color: #996633">test</span>
-  (<span style="color: #0066BB; font-weight: bold">square</span> <span style="color: #996633">s1</span>
-     (<span style="color: #0066BB; font-weight: bold">position</span> <span style="color: #0000DD; font-weight: bold">123</span> <span style="color: #0000DD; font-weight: bold">345</span>)
-     (<span style="color: #0066BB; font-weight: bold">size</span> <span style="color: #0000DD; font-weight: bold">12</span>)
+'''lisp
+(scene test
+  (square s1
+     (position 123 345)
+     (size 12)
   )
-  (<span style="color: #0066BB; font-weight: bold">circle</span> <span style="color: #996633">c1</span>
-     (<span style="color: #0066BB; font-weight: bold">position</span> <span style="color: #0000DD; font-weight: bold">123</span> <span style="color: #0000DD; font-weight: bold">345</span>)
-     (<span style="color: #0066BB; font-weight: bold">size</span> <span style="color: #0000DD; font-weight: bold">12</span> <span style="color: #0000DD; font-weight: bold">23</span>)
+  (circle c1
+     (position 123 345)
+     (size 12 23)
   )
-  (<span style="color: #0066BB; font-weight: bold">rectangle</span> <span style="color: #996633">s2</span>
-     (<span style="color: #0066BB; font-weight: bold">position</span> <span style="color: #0000DD; font-weight: bold">323</span> <span style="color: #0000DD; font-weight: bold">445</span>)
-     (<span style="color: #0066BB; font-weight: bold">size</span> <span style="color: #0000DD; font-weight: bold">12</span> <span style="color: #0000DD; font-weight: bold">34</span>)
+  (rectangle s2
+     (position 323 445)
+     (size 12 34)
   )
 )
-</pre></div>
+'''
 
 Now let\'s express the concepts of this model : let\'s name this a *metamodel*. I suffix this file with \'.mm\'. It ressembles *Ruby modules and class*, but it is not.
+'''Ruby
+module Geometry
 
-<!-- HTML generated using hilite.me --><div style="background: #f0f3f3; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #006699; font-weight: bold">module</span> <span style="color: #00CCFF; font-weight: bold">Geometry</span>
+  class Scene
+    attr name => IDENT
+    attr elements => Shape[]
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Scene</span>
-    <span style="color: #006699">attr</span> <span style="color: #336666">name</span> <span style="color: #555555">=&gt;</span> <span style="color: #336600">IDENT</span>
-    <span style="color: #006699">attr</span> elements <span style="color: #555555">=&gt;</span> <span style="color: #336600">Shape</span><span style="color: #555555">[]</span>
-  <span style="color: #006699; font-weight: bold">end</span>
+  class Shape
+    attr id => IDENT
+    attr position => Position
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Shape</span>
-    <span style="color: #006699">attr</span> <span style="color: #336666">id</span> <span style="color: #555555">=&gt;</span> <span style="color: #336600">IDENT</span>
-    <span style="color: #006699">attr</span> position <span style="color: #555555">=&gt;</span> <span style="color: #336600">Position</span>
-  <span style="color: #006699; font-weight: bold">end</span>
+  class Square < Shape
+    attr size => Size
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Square</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">Shape</span>
-    <span style="color: #006699">attr</span> size <span style="color: #555555">=&gt;</span> <span style="color: #336600">Size</span>
-  <span style="color: #006699; font-weight: bold">end</span>
+  class Circle < Shape
+    attr radius => Size
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Circle</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">Shape</span>
-    <span style="color: #006699">attr</span> radius <span style="color: #555555">=&gt;</span> <span style="color: #336600">Size</span>
-  <span style="color: #006699; font-weight: bold">end</span>
+  class Rectangle < Shape
+    attr size => Size
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Rectangle</span> <span style="color: #555555">&lt;</span> <span style="color: #336600">Shape</span>
-    <span style="color: #006699">attr</span> size <span style="color: #555555">=&gt;</span> <span style="color: #336600">Size</span>
-  <span style="color: #006699; font-weight: bold">end</span>
+  class Size
+    attr dims => INTEGER[]
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Size</span>
-    <span style="color: #006699">attr</span> dims <span style="color: #555555">=&gt;</span> <span style="color: #336600">INTEGER</span><span style="color: #555555">[]</span>
-  <span style="color: #006699; font-weight: bold">end</span>
+  class Position
+    attr coord => INTEGER[]
+  end
 
-  <span style="color: #006699; font-weight: bold">class</span> <span style="color: #00AA88; font-weight: bold">Position</span>
-     <span style="color: #006699">attr</span> coord <span style="color: #555555">=&gt;</span> <span style="color: #336600">INTEGER</span><span style="color: #555555">[]</span>
-  <span style="color: #006699; font-weight: bold">end</span>
-<span style="color: #006699; font-weight: bold">end</span>
-</pre></div>
+end
 
+'''
 
 
 Then compile this metamodel using Astrapi :
