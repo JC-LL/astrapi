@@ -15,7 +15,7 @@ Finally a driver for you own DSL compiler is also generated. Version 0.0.8 provi
 Astrapi-generated DSL parser will assume your DSL models are written in plain **s-expressions**.
 
 ## What are s-expressions ?
-S-expressions, abreviated as \"sexps\", actually mean \"symbolic expressions\". They originated from the famous LISP language. Compiler designers resort to  *sexp* as the most direct mean to capture Abstract Syntax Trees (AST) in a textual format.
+S-expressions, abbreviated as \"sexps\", actually mean \"symbolic expressions\". They originated from the famous LISP language. Compiler designers resort to  *sexp* as the most direct mean to capture Abstract Syntax Trees (AST) in a textual format.
 
 Sexps are convenient to serialize both data *and* code, which offers a superiority over other serialization formats like XML, YAML or JSON.  
 
